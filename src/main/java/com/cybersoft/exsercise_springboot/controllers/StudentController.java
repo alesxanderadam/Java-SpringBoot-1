@@ -22,39 +22,49 @@ public class StudentController {
        return new ResponseEntity<>(listStudentModel,HttpStatus.OK);
     }
 //    1. Write a method to add a student using query @RequestParam
-//    @PostMapping("/add")
-//    public ResponseEntity<ListStudentModel> addStudent(@RequestParam String name, @RequestParam int age){
-//        studentService.addStudent(name, age);
-//        ListStudentModel listStudentModel = studentService.getAllStudents();
-//        return new ResponseEntity<>(listStudentModel, HttpStatus.OK);
-//    }
+    @PostMapping("/add")
+    public ResponseEntity<?> addStudent(@RequestParam String name, @RequestParam int age){
+        if(validateStudentData(name,age)){
+            studentService.addStudent(name, age);
+            ListStudentModel listStudentModel = studentService.getAllStudents();
+            return new ResponseEntity<>(listStudentModel, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Dữ liệu học sinh không hợp lệ!", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 //    2. Write a method to add a student using query @RequestParam
 //    @PostMapping("/add/{name}/{age}")
-//    public ResponseEntity<ListStudentModel> addStudent(@PathVariable String name, @PathVariable int age){
-//        studentService.addStudent(name, age);
-//        ListStudentModel listStudentModel = studentService.getAllStudents();
-//        return new ResponseEntity<>(listStudentModel, HttpStatus.OK);
+//    public ResponseEntity<?> addStudent(@PathVariable String name, @PathVariable int age){
+//        try{
+//            if(validateStudentData(name,age)){
+//                studentService.addStudent(name, age);
+//                ListStudentModel listStudentModel = studentService.getAllStudents();
+//                return new ResponseEntity<>(listStudentModel, HttpStatus.OK);
+//            }else{
+//                return new ResponseEntity<>("Dữ liệu học sinh không hợp lệ!", HttpStatus.BAD_REQUEST);
+//            }
+//        }catch (Exception error){
+//            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
 //    }
 
 //  3. Write a method to add a student using query @RequestBody
-    @PostMapping("/add")
-    public ResponseEntity<?> addStudent(@RequestBody StudentModel studentModel){
-        try{
-            if(validateStudentData(studentModel.getName(), studentModel.getAge())){
-                studentService.addStudent(studentModel.getName(), studentModel.getAge());
-                ListStudentModel listStudentModel = studentService.getAllStudents();
-                return new ResponseEntity<>(listStudentModel, HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>("Dữ liệu học sinh không hợp lệ!", HttpStatus.BAD_REQUEST);
-            }
-        }catch (Exception error){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<?> addStudent(@RequestBody StudentModel studentModel){
+//        try{
+//            if(validateStudentData(studentModel.getName(), studentModel.getAge())){
+//                studentService.addStudent(studentModel.getName(), studentModel.getAge());
+//                ListStudentModel listStudentModel = studentService.getAllStudents();
+//                return new ResponseEntity<>(listStudentModel, HttpStatus.OK);
+//            }else{
+//                return new ResponseEntity<>("Dữ liệu học sinh không hợp lệ!", HttpStatus.BAD_REQUEST);
+//            }
+//        }catch (Exception error){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
     private boolean validateStudentData(String name, int age) {
         if (name == null || name.isEmpty()) {
             return false;
